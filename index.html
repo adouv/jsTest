@@ -1,0 +1,147 @@
+<script>
+    //this永远指向最后调用它的那个对象
+
+    /*
+        以下执行结果是：333、undefined、111
+        原因：
+    */
+    // var fullName = "111";
+    // var obj = {
+    //     fullName: '222',
+    //     porp: {
+    //         fullName: '333',
+    //         getFullName: function() {
+    //             console.log(this.fullName);
+    //         }
+    //     }
+    // };
+    // console.log(obj.porp.getFullName());//333  undefined
+    // let getFullName = obj.porp.getFullName;
+    // getFullName();//111
+
+    /*
+        以下执行结果是：1、4、3、2
+    */
+    // console.log(1);
+    // setTimeout(() => {
+    //     console.log(2);
+    // }, 1000);
+    // setTimeout(() => {
+    //     console.log(3);
+    // }, 0);
+    // console.log(4);
+
+    /*
+        以下执行结果是：1、2、Uncaught Error:3 at ***.html/js:98
+        原因：
+    */
+    // try {
+    //     console.log(1);
+    //     setTimeout(() => {
+    //         console.log(2);
+    //         throw new Error(3);
+    //     }, 0);
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
+    /*
+        以下执行结果是：foo
+        原因：
+    */
+    // Promise.resolve('foo').then(Promise.resolve('bar')).then(result => {
+    //     console.log(result);
+    // });
+
+    /*
+        两个数组的交集
+    */
+    //通过filter、includes取交集
+    // var A = [2, 1, 3];
+    // var B = [1, 4, 2];
+    // var temp = [];
+    // var intersectArray = function(A, B) {
+    //     A.filter(i => {
+    //         let inc = B.includes(i);
+    //         console.log(inc);
+    //         if (inc) {
+    //             temp.push(i);
+    //         }
+    //     });
+    // }
+    // intersectArray(A, B);
+    // console.log(temp);
+    //通过双循环去交集
+    // for (let index = 0; index < A.length; index++) {
+
+    // }
+
+
+    /*
+        以下输出结果是：1、8、5、7、6、3、2、4
+    */
+    // console.log(1);
+    // setTimeout(() => {
+    //     setTimeout(() => {
+    //         console.log(2);
+    //     });
+    //     Promise.resolve().then(data => {
+    //         console.log(3);
+    //     });
+    // }, 0);
+    // setTimeout(() => {
+    //     console.log(4);
+    // }, 200);
+    // Promise.resolve().then(data => {
+    //     console.log(5);
+    // }).then(() => {
+    //     console.log(6);
+    // });
+    // Promise.resolve().then(() => {
+    //     console.log(7);
+    // });
+    // console.log(8);
+
+    /*
+        为object增加一个clone方法，实现深度克隆对象
+    */
+
+    // Object.prototype.clone = function() {
+    //     //原型指向保持一致
+    //     var newObj = Object.create(Object.getPrototypeOf(this));
+    //     //自身属性保持一致
+    //     var propNames = Object.getOwnPropertyNames(this);
+    //     // propNames.forEach(function(item) {
+    //     //     //保持每个属性的特性也一样
+    //     //     var des = Object.getOwnPropertyDescriptor(this, item);
+    //     //     Object.defineProperty(newObj, item, des);
+    //     // }, this);
+    //     //保持每个属性的特性也一样
+    //     propNames.forEach(item => {
+    //         var des = Object.getOwnPropertyDescriptor(this, item);
+    //         Object.defineProperty(newObj, item, des);
+    //     }, this);
+    //     return new Object;
+    // };
+
+    var a = {
+        name: '111',
+        func1: function() {
+            console.log(this.name);
+        },
+        func2: function() {
+            // setTimeout(function() {
+            //     console.log(this.name); //打印输出为undefined，并不是当前对象的name
+            // }, 100);
+            // setTimeout(function()  {
+            //     console.log(this.name);//加上  apply 之后 改变this指向，打印出来的才是当前对象的name  111
+            // }.apply(a), 100);
+            //也可以使用箭头函数
+            setTimeout(() => {
+                console.log(this.name);
+            }, 100);
+        }
+    };
+
+    a.func2();
+</script>
